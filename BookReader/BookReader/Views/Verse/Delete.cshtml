@@ -1,0 +1,33 @@
+﻿@model BookReader.Models.VerseModel
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>VerseModel</legend>
+
+    <div class="display-label">VerseNumber</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.VerseNumber)
+    </div>
+
+    <div class="display-label">VerseText</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.VerseText)
+    </div>
+
+    <div class="display-label">Chapter</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Chapter.Title)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

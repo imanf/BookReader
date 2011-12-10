@@ -1,0 +1,35 @@
+﻿@model BookReader.Models.ChapterModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>ChapterModel</legend>
+
+    <div class="display-label">Number</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Number)
+    </div>
+
+    <div class="display-label">Title</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Title)
+    </div>
+
+    <div class="display-label">PreText</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PreText)
+    </div>
+
+    <div class="display-label">Book</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Book.Title)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

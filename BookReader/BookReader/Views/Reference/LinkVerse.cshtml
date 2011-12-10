@@ -1,0 +1,163 @@
+﻿@model BookReader.Models.BookReaderContext
+@{
+    ViewBag.Title = "LinkVerse";
+}
+
+<script src="/Scripts/jquery-1.5.1.js" type="text/javascript"></script>
+<script src="/Scripts/jquery-ui-1.8.11.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+    function setClickBindings() {
+        $(".deleteReference").click(function () {
+            var referenceId = $(this).attr('id');
+            $.post("/Reference/Delete", { "referenceId": referenceId }, function (data) {
+            }).complete(function () {
+                $("#Chapters").change();
+            });
+        });
+
+        // Open dialog when clicking on row
+        $('.verseText').bind('click', function () {
+            $("#AddReferenceDialog").data('targetVerseId', $(this).parent().attr("id")).dialog('open');
+        });
+    }
+
+    $(function () {
+        $("#Books").change(function () {
+            var id = $(this).attr("value");
+
+            if (id != '') {
+                $.post("/Reference/GetChapters", { "bookId": id }, function (data) {
+                    var chapterList = $("#Chapters");
+                    chapterList.empty();
+                    chapterList.append($('<option/>', { value: 0, text: "- Select a Chapter -" }));
+                    $.each(data, function (index, itemData) {
+                        chapterList.append($('<option/>', { value: itemData.Value, text: itemData.Text }));
+                    });
+                });
+            }
+        });
+
+        $("#Chapters").change(function () {
+            var id = $(this).attr("value");
+
+            if (id != '') {
+                $.ajaxSetup({ async: false });
+                var verseData;
+                $.post("/Reference/GetVerses", { "chapterId": id }, function (data) {
+                    verseData = data;
+                }).complete(function () {
+
+                    var verseList = $("#Verses tbody");
+                    verseList.html("");
+
+                    if (verseData != null) {
+                        $.each(verseData, function (verseIndex, verseData) {
+                            verseList.append('<tr id=' + verseData.Id + '></tr>');
+                            var tr = $('tr:last', verseList);
+
+                            var referenceData;
+                            $.post("/Reference/GetReferences", { "verseId": verseData.Id }, function (data) {
+                                referenceData = data;
+
+                            }).complete(function () {
+                                tr.append('<td>' + verseData.VerseNumber + '</td><td class="verseText">' + verseData.VerseText + '</td><td></td>');
+                                var td = $('td:last', tr);
+
+                                $.each(referenceData, function (referenceIndex, referenceData) {
+                                    td.append('<li>' +
+                                        referenceData.ChapterName + " " +
+                                        referenceData.ChapterNumber + ":" +
+                                        referenceData.VerseNumber + "&nbsp;" +
+                                        '<span class="deleteReference" id=' + referenceData.ReferenceId + '>Delete</span>' +
+                                        '</li>');
+                                });
+                            });
+
+                        });
+                    }
+
+                    // Make alternate rows darker
+                    $('tr:even').addClass('darkenBackground');
+                    setClickBindings();
+                });
+            }
+        });
+
+
+
+        $("#AddReferenceDialog").dialog({
+            title: "Add a reference",
+            autoOpen: false,
+            modal: true,
+            buttons: [
+                {
+                    text: "Add Reference",
+                    click: function () {
+                        var targetVerseId = $(this).data('targetVerseId');
+                        var sourceBookId = $(this).dialog().find("#Books").val();
+                        var sourceChapter = $("#Chapter").val();
+                        var sourceVerse = $("#Verse").val();
+                        if (sourceBookId != '' && sourceChapter != '' && sourceVerse != '') {
+                            $.post("/Reference/AddReference", {
+                                "targetVerseId": targetVerseId,
+                                "sourceBookId": sourceBookId,
+                                "sourceChapterNum": sourceChapter,
+                                "sourceVerseNum": sourceVerse
+                            });
+                            $("#Chapters").change();
+                            $(this).dialog('close');
+                        } else {
+                            //validation
+                        }
+
+                    }
+                }
+            ]//,
+            //open: function () {
+            //$(this).parents('.ui-dialog-buttonpane button:eq(0)').focus(); 
+            //}
+        });
+
+    });
+
+</script>
+
+
+<h2>LinkVerse</h2>
+
+    <div class="BookList">
+        @Html.DropDownList("Books", "- Select a Book -" )
+    </div>
+
+    <div class="ChapList">
+        @Html.DropDownListFor(Model => Model.ChapterModels, 
+            new SelectList(Enumerable.Empty<SelectListItem>(), "Id", "Number"), 
+            "- Select a Chapter -", new {id = "Chapters"})
+    </div>
+
+
+<div class="VerseList">
+    <table id="Verses">
+        <thead>
+            <tr>
+                <th>Verse #</th>
+                <th>Verse</th>
+                <th style="width: 15em">References</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+
+<div id="AddReferenceDialog">
+    <div>
+        @Html.DropDownList("Books", "- Select a Book -")
+    </div>
+    <div>
+        @Html.TextBox("Chapter")
+        @Html.TextBox("Verse")
+    </div>
+</div>

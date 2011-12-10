@@ -1,0 +1,49 @@
+﻿@model BookReader.Models.VerseModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>VerseModel</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.VerseNumber)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.VerseNumber)
+            @Html.ValidationMessageFor(model => model.VerseNumber)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.VerseText)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.VerseText)
+            @Html.ValidationMessageFor(model => model.VerseText)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ChapterId, "Chapter")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ChapterId", String.Empty)
+            @Html.ValidationMessageFor(model => model.ChapterId)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

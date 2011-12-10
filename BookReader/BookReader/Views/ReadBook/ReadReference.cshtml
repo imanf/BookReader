@@ -1,0 +1,39 @@
+﻿@model BookReader.Models.BookModel
+
+@{
+    ViewBag.Title = "Read Reference";
+}
+
+<script type="text/javascript">
+    $(function () {
+        $(".verseTable tr:even").addClass("darkenBackground");
+
+        $("#ReferenceBookReader").parent().scrollTop($("a[name='@ViewBag.VerseNumber']").parent().position().top);
+    });
+
+</script>
+<h2>Reference</h2>
+
+<div id="ReferenceBookReader">
+    @if (Model != null) {
+        foreach (var chapter in Model.Chapters) { 
+            <span>Chapter Number: </span>@Html.DisplayFor(m => chapter.Number)<br />
+            <span>Chapter Title: </span>@Html.DisplayFor(m => chapter.Title)<br />
+            
+            <table class="verseTable">
+                <thead>
+                    <tr>
+                        <th>Verse</th>
+                        <th>Text</th>
+                    </tr>
+                </thead>
+            @foreach (var verse in chapter.Verses.OrderBy(x => x.VerseNumber)) { 
+                <tr>
+                    <td><a name="@verse.VerseNumber">@Html.DisplayFor(m => verse.VerseNumber)</a></td>
+                    <td>@Html.DisplayFor(m => verse.VerseText)</td>
+                </tr>
+            }
+            </table>
+        }
+    }
+</div>

@@ -1,0 +1,30 @@
+﻿@model BookReader.Models.VerseModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>VerseModel</legend>
+
+    <div class="display-label">VerseNumber</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.VerseNumber)
+    </div>
+
+    <div class="display-label">VerseText</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.VerseText)
+    </div>
+
+    <div class="display-label">Chapter</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Chapter.Title)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
