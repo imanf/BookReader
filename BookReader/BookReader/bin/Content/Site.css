@@ -107,14 +107,19 @@ textarea
 .tooltip {
     display:none;
     background: gray;
-    font-size:12px;
-    height:70px;
-    width:160px;
+    font-size:1em;
+    width:200px;
     padding:25px;
     color:#fff;	
 }
 
 .tooltip div 
 {
-    cursor: pointer;   
+    cursor: pointer; 
+    padding: 5px;  
+}
+
+.tooltip div:hover
+{
+    text-decoration: underline;
 }

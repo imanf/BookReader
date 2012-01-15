@@ -18,8 +18,18 @@
 
         // Open dialog when clicking on row
         $('.verseText').bind('click', function () {
-            $("#AddReferenceDialog").data('targetVerseId', $(this).parent().attr("id")).dialog('open');
+            // TODO: Check browser compatability
+            var anchor = window.getSelection().anchorOffset;
+            var focus = window.getSelection().focusOffset;
+
+            if (anchor == focus) {
+                alert('A text range was not selected.');
+            } else {
+                $("#AddReferenceDialog").data({ 'targetVerseId': $(this).parent().attr("id"), 'startOffset': anchor, 'endOffset': focus }).dialog('open');
+            }
         });
+
+
     }
 
     $(function () {
@@ -95,6 +105,8 @@
                     text: "Add Reference",
                     click: function () {
                         var targetVerseId = $(this).data('targetVerseId');
+                        var startOffset = $(this).data('startOffset');
+                        var endOffset = $(this).data('endOffset');
                         var sourceBookId = $(this).dialog().find("#Books").val();
                         var sourceChapter = $("#Chapter").val();
                         var sourceVerse = $("#Verse").val();
@@ -103,7 +115,9 @@
                                 "targetVerseId": targetVerseId,
                                 "sourceBookId": sourceBookId,
                                 "sourceChapterNum": sourceChapter,
-                                "sourceVerseNum": sourceVerse
+                                "sourceVerseNum": sourceVerse,
+                                "startOffset": startOffset,
+                                "endOffset": endOffset
                             });
                             $("#Chapters").change();
                             $(this).dialog('close');

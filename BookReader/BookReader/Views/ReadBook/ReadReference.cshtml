@@ -5,10 +5,12 @@
 }
 
 <script type="text/javascript">
+
     $(function () {
         $(".verseTable tr:even").addClass("darkenBackground");
 
         $("#ReferenceBookReader").parent().scrollTop($("a[name='@ViewBag.VerseNumber']").parent().position().top);
+
     });
 
 </script>

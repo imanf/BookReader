@@ -7,3 +7,12 @@ C:\Users\Iman\Documents\Visual Studio 2010\Projects\BookReader\BookReader\bin\En
 C:\Users\Iman\Documents\Visual Studio 2010\Projects\BookReader\BookReader\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\Iman\Documents\Visual Studio 2010\Projects\BookReader\BookReader\obj\Debug\BookReader.dll
 C:\Users\Iman\Documents\Visual Studio 2010\Projects\BookReader\BookReader\obj\Debug\BookReader.pdb
+C:\Projects\BookReader\BookReader\bin\Files\Source\001_Quran.txt
+C:\Projects\BookReader\BookReader\bin\Content\Site.css
+C:\Projects\BookReader\BookReader\bin\BookReader.dll
+C:\Projects\BookReader\BookReader\bin\BookReader.pdb
+C:\Projects\BookReader\BookReader\bin\EntityFramework.dll
+C:\Projects\BookReader\BookReader\bin\EntityFramework.xml
+C:\Projects\BookReader\BookReader\obj\Debug\ResolveAssemblyReference.cache
+C:\Projects\BookReader\BookReader\obj\Debug\BookReader.dll
+C:\Projects\BookReader\BookReader\obj\Debug\BookReader.pdb

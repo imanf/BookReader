@@ -177,7 +177,7 @@ namespace BookReader.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddReference(Guid targetVerseId, Guid sourceBookId, int sourceChapterNum, int sourceVerseNum)
+        public ActionResult AddReference(Guid targetVerseId, Guid sourceBookId, int sourceChapterNum, int sourceVerseNum, int startOffset, int endOffset)
         {
             var targetVerse = db.VerseModels.Find(targetVerseId);
             
@@ -192,8 +192,16 @@ namespace BookReader.Controllers
             {
                 Id = Guid.NewGuid(),
                 QuotingVerse = targetVerse,
-                ReferencedVerse = sourceVerse.Single()
+                ReferencedVerse = sourceVerse.Single(),
+                StartOffset = startOffset,
+                EndOffset = endOffset
             };
+
+            if (startOffset > endOffset)
+            {
+                reference.StartOffset = endOffset;
+                reference.EndOffset = startOffset;
+            }
 
             db.ReferenceModels.Add(reference);
             db.SaveChanges();

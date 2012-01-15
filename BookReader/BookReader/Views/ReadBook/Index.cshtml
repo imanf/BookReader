@@ -1,10 +1,11 @@
 ﻿@model BookReader.ViewModels.ReadBookViewModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Read a Book";
 }
 
 <script type="text/javascript">
+
     $(function () {
         $("#BookId").change(function () {
             $("#SelectBookForm form").submit();
@@ -13,7 +14,8 @@
         $('.verseTable tr:even').addClass('darkenBackground');
 
         $(".referenceColumn").tooltip({
-            position: 'top left'
+            position: 'top left',
+            delay: 150
         });
 
         $("#ReadReferenceDialog").dialog({
@@ -32,7 +34,7 @@
     });
 </script>
 
-<h2>Index</h2>
+<h2>Read a Book</h2>
 
 <div id="SelectBookForm">
     @using (Html.BeginForm(new { id = "SelectBook" }))
@@ -41,16 +43,16 @@
     }
 </div>
 
-<div id="BookReader">
+<div>
     @if (Model.Book != null) {
         foreach (var chapter in Model.Book.Chapters) { 
-            <span>Chapter Number: </span>@Html.DisplayFor(m => chapter.Number)<br />
-            <span>Chapter Title: </span>@Html.DisplayFor(m => chapter.Title)<br />
+            <span>Chapter Number: </span>@chapter.Number<br />
+            <span>Chapter Title: </span>@chapter.Title<br />
 
             <table class="verseTable">
                 <thead>
                     <tr>
-                        <th>Verse</th>
+                        <th>Verse #</th>
                         <th>Text</th>
                         <th>Ref. Count</th>
                     </tr>
@@ -58,15 +60,15 @@
             @foreach (var verse in chapter.Verses.OrderBy(x => x.VerseNumber)) {
                 var verseReferences = Model.References.Where(x => x.ReferencedVerse.Id == verse.Id);
                 <tr>
-                    <td>@Html.DisplayFor(m => verse.VerseNumber)</td>
-                    <td>@Html.DisplayFor(m => verse.VerseText)</td>
+                    <td>@verse.VerseNumber</td>
+                    <td>@verse.VerseText</td>
                     <td>
                         <div class="referenceColumn">@verseReferences.Count()</div>
                         @if (verseReferences.Count() > 0) { 
                             <div class="tooltip">
                                 @foreach (var reference in verseReferences)
                                 {
-                                    <div id="@reference.QuotingVerse.Id">@Html.DisplayFor(x => reference.QuotingVerse.Chapter.Book.Title, new { id = "aa", pn = "2" })</div>
+                                    <div id="@reference.QuotingVerse.Id">@reference.QuotingVerse.Chapter.Book.Title &para;@reference.QuotingVerse.VerseNumber</div>
                                 }
                             </div>
                         }
@@ -79,5 +81,6 @@
     }
 </div>
 
+@** Dialog placeholder **@
 <div id="ReadReferenceDialog">
 </div>

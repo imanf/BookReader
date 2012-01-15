@@ -31,7 +31,9 @@ namespace BookReader.Controllers
             ViewBag.BookId = new SelectList(db.BookModels, "Id", "Title");
 
             readBook.Book = db.BookModels.Find(readBook.BookId);
-            readBook.References = db.ReferenceModels.Include(x => x.QuotingVerse.Chapter).Include(x => x.QuotingVerse.Chapter.Book).Where(x => x.ReferencedVerse.Chapter.Book.Id == readBook.Book.Id).ToList();
+            readBook.References = db.ReferenceModels.Include(x => x.QuotingVerse.Chapter)
+                                                    .Include(x => x.QuotingVerse.Chapter.Book)
+                                                    .Where(x => x.ReferencedVerse.Chapter.Book.Id == readBook.Book.Id).ToList();
 
             return View(readBook);
         }
