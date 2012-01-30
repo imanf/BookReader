@@ -45,7 +45,7 @@
 
 <div>
     @if (Model.Book != null) {
-        foreach (var chapter in Model.Book.Chapters) { 
+        foreach (var chapter in Model.Book.Chapters.OrderBy(x => x.Number)) { 
             <span>Chapter Number: </span>@chapter.Number<br />
             <span>Chapter Title: </span>@chapter.Title<br />
 

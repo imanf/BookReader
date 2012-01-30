@@ -1,4 +1,4 @@
-﻿@model BookReader.Models.BookReaderContext
+﻿@model BookReader.Data.Models.BookReaderContext
 @{
     ViewBag.Title = "LinkVerse";
 }
@@ -145,7 +145,7 @@
     </div>
 
     <div class="ChapList">
-        @Html.DropDownListFor(Model => Model.ChapterModels, 
+        @Html.DropDownListFor(Model => Model.Chapters, 
             new SelectList(Enumerable.Empty<SelectListItem>(), "Id", "Number"), 
             "- Select a Chapter -", new {id = "Chapters"})
     </div>

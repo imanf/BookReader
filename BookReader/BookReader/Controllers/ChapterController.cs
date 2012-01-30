@@ -5,21 +5,19 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using BookReader.Models;
+using BookReader.Data.Models;
+using BookReader.Data;
 
 namespace BookReader.Controllers
 { 
     public class ChapterController : Controller
     {
-        private BookReaderContext db = new BookReaderContext();
-
         //
         // GET: /Chapter/
 
         public ViewResult Index()
         {
-            var chaptermodels = db.ChapterModels.Include(c => c.Book);
-            return View(chaptermodels.ToList());
+            return View(ChapterManager.GetAll());
         }
 
         //
@@ -27,8 +25,7 @@ namespace BookReader.Controllers
 
         public ViewResult Details(Guid id)
         {
-            ChapterModel chaptermodel = db.ChapterModels.Find(id);
-            return View(chaptermodel);
+            return View(ChapterManager.Get(id));
         }
 
         //
@@ -36,7 +33,7 @@ namespace BookReader.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.BookId = new SelectList(db.BookModels, "Id", "Title");
+            ViewBag.BookId = new SelectList(BookManager.GetAll(), "Id", "Title");
             return View();
         } 
 
@@ -44,18 +41,16 @@ namespace BookReader.Controllers
         // POST: /Chapter/Create
 
         [HttpPost]
-        public ActionResult Create(ChapterModel chaptermodel)
+        public ActionResult Create(Chapter chapter)
         {
             if (ModelState.IsValid)
             {
-                chaptermodel.Id = Guid.NewGuid();
-                db.ChapterModels.Add(chaptermodel);
-                db.SaveChanges();
+                ChapterManager.Create(chapter);
                 return RedirectToAction("Index");  
             }
 
-            ViewBag.BookId = new SelectList(db.BookModels, "Id", "Title", chaptermodel.BookId);
-            return View(chaptermodel);
+            //ViewBag.BookId = new SelectList(BookManager.GetAll(), "Id", "Title", chapter.BookId);
+            return View();
         }
         
         //
@@ -63,25 +58,24 @@ namespace BookReader.Controllers
  
         public ActionResult Edit(Guid id)
         {
-            ChapterModel chaptermodel = db.ChapterModels.Find(id);
-            ViewBag.BookId = new SelectList(db.BookModels, "Id", "Title", chaptermodel.BookId);
-            return View(chaptermodel);
+            Chapter chapter = ChapterManager.Get(id);
+            ViewBag.BookId = new SelectList(BookManager.GetAll(), "Id", "Title", chapter.BookId);
+            return View(chapter);
         }
 
         //
         // POST: /Chapter/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(ChapterModel chaptermodel)
+        public ActionResult Edit(Chapter chapter)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(chaptermodel).State = EntityState.Modified;
-                db.SaveChanges();
+                ChapterManager.Edit(chapter);
                 return RedirectToAction("Index");
             }
-            ViewBag.BookId = new SelectList(db.BookModels, "Id", "Title", chaptermodel.BookId);
-            return View(chaptermodel);
+            //ViewBag.BookId = new SelectList(db.Books, "Id", "Title", chapter.BookId);
+            return View();
         }
 
         //
@@ -89,8 +83,8 @@ namespace BookReader.Controllers
  
         public ActionResult Delete(Guid id)
         {
-            ChapterModel chaptermodel = db.ChapterModels.Find(id);
-            return View(chaptermodel);
+            Chapter chapter = ChapterManager.Get(id);
+            return View(chapter);
         }
 
         //
@@ -99,16 +93,9 @@ namespace BookReader.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(Guid id)
         {            
-            ChapterModel chaptermodel = db.ChapterModels.Find(id);
-            db.ChapterModels.Remove(chaptermodel);
-            db.SaveChanges();
+            ChapterManager.Delete(id);
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
-        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
 
-namespace BookReader.Models
+namespace BookReader.Data.Models
 {
     public class BookReaderContext : DbContext
     {
@@ -11,16 +11,19 @@ namespace BookReader.Models
         // code to the Application_Start method in your Global.asax file.
         // Note: this will destroy and re-create your database with every model change.
         // 
-        // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<BookReader.Models.BookReaderContext>());
+        // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<BookReader.Data.Models.BookReaderContext>());
 
-        public DbSet<SourceBookModel> SourceBookModels { get; set; }
-        public DbSet<BookModel> BookModels { get; set; }
-        public DbSet<ChapterModel> ChapterModels { get; set; }
-        public DbSet<VerseModel> VerseModels { get; set; }
+        public BookReaderContext()
+        {
+            Configuration.ProxyCreationEnabled = false;
+        }
 
-        public DbSet<ReferenceModel> ReferenceModels { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<Chapter> Chapters { get; set; }
+        public DbSet<Verse> Verses { get; set; }
 
-       
+        public DbSet<Reference> References { get; set; }
+
 
     }
 }

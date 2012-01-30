@@ -1,4 +1,4 @@
-﻿@model BookReader.Models.VerseModel
+﻿@model BookReader.Data.Models.Verse
 
 @{
     ViewBag.Title = "Edit";
@@ -12,7 +12,7 @@
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
     <fieldset>
-        <legend>VerseModel</legend>
+        <legend>Verse</legend>
 
         @Html.HiddenFor(model => model.Id)
 

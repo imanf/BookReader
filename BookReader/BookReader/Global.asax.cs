@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using BookReader.Models;
 
 namespace BookReader
 {
@@ -25,16 +24,16 @@ namespace BookReader
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
-                new { controller = "ReadBook", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+                new { controller = "Reference", action = "LinkVerse", id = UrlParameter.Optional } // Parameter defaults
             );
 
         }
 
         protected void Application_Start()
         {
-            //System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseAlways<BookReader.Models.BookReaderContext>());
-
-            //Models.TestData.Seed(new BookReaderContext());
+            System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseAlways<BookReader.Data.Models.BookReaderContext>());
+            
+            BookReader.Data.Models.TestData.Seed(new BookReader.Data.Models.BookReaderContext());
 
             AreaRegistration.RegisterAllAreas();
 

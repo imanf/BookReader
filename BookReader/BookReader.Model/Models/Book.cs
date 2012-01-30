@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
-namespace BookReader.Models
+namespace BookReader.Data.Models
 {
-    public class BookModel
+    [DataContract]
+    public class Book : BookLevelType
     {
-        [Key]
-        public Guid Id { get; set; }
-
+        [DataMember]
         public String Title { get; set; }
 
+        [DataMember]
         public String Author { get; set; }
-
+        
         public String FilePath { get; set; }
 
-        public virtual ICollection<ChapterModel> Chapters { get; set; }
+        public virtual ICollection<Chapter> Chapters { get; set; }
     }
 }

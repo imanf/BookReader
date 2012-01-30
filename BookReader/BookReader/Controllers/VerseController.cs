@@ -5,21 +5,20 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using BookReader.Models;
+using BookReader.Data.Models;
+using BookReader.Data;
 
 namespace BookReader.Controllers
 { 
     public class VerseController : Controller
     {
-        private BookReaderContext db = new BookReaderContext();
 
         //
         // GET: /Verse/
 
         public ViewResult Index()
         {
-            var versemodels = db.VerseModels.Include(v => v.Chapter);
-            return View(versemodels.ToList());
+            return View(VerseManager.GetAll());
         }
 
         //
@@ -27,8 +26,7 @@ namespace BookReader.Controllers
 
         public ViewResult Details(Guid id)
         {
-            VerseModel versemodel = db.VerseModels.Find(id);
-            return View(versemodel);
+            return View(VerseManager.Get(id));
         }
 
         //
@@ -36,7 +34,7 @@ namespace BookReader.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.ChapterId = new SelectList(db.ChapterModels, "Id", "Title");
+            ViewBag.ChapterId = new SelectList(ChapterManager.GetAll(), "Id", "Title");
             return View();
         } 
 
@@ -44,18 +42,16 @@ namespace BookReader.Controllers
         // POST: /Verse/Create
 
         [HttpPost]
-        public ActionResult Create(VerseModel versemodel)
+        public ActionResult Create(Verse verse)
         {
             if (ModelState.IsValid)
             {
-                versemodel.Id = Guid.NewGuid();
-                db.VerseModels.Add(versemodel);
-                db.SaveChanges();
+                VerseManager.Create(verse);
                 return RedirectToAction("Index");  
             }
 
-            ViewBag.ChapterId = new SelectList(db.ChapterModels, "Id", "Title", versemodel.ChapterId);
-            return View(versemodel);
+            //ViewBag.ChapterId = new SelectList(db.Chapters, "Id", "Title", versemodel.ChapterId);
+            return View();
         }
         
         //
@@ -63,25 +59,24 @@ namespace BookReader.Controllers
  
         public ActionResult Edit(Guid id)
         {
-            VerseModel versemodel = db.VerseModels.Find(id);
-            ViewBag.ChapterId = new SelectList(db.ChapterModels, "Id", "Title", versemodel.ChapterId);
-            return View(versemodel);
+            Verse verse = VerseManager.Get(id);
+            ViewBag.ChapterId = new SelectList(ChapterManager.GetAll(), "Id", "Title", verse.ChapterId);
+            return View(verse);
         }
 
         //
         // POST: /Verse/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(VerseModel versemodel)
+        public ActionResult Edit(Verse verse)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(versemodel).State = EntityState.Modified;
-                db.SaveChanges();
+                VerseManager.Edit(verse);
                 return RedirectToAction("Index");
             }
-            ViewBag.ChapterId = new SelectList(db.ChapterModels, "Id", "Title", versemodel.ChapterId);
-            return View(versemodel);
+            //ViewBag.ChapterId = new SelectList(db.Chapters, "Id", "Title", versemodel.ChapterId);
+            return View();
         }
 
         //
@@ -89,8 +84,7 @@ namespace BookReader.Controllers
  
         public ActionResult Delete(Guid id)
         {
-            VerseModel versemodel = db.VerseModels.Find(id);
-            return View(versemodel);
+            return View(VerseManager.Get(id));
         }
 
         //
@@ -98,17 +92,9 @@ namespace BookReader.Controllers
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(Guid id)
-        {            
-            VerseModel versemodel = db.VerseModels.Find(id);
-            db.VerseModels.Remove(versemodel);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
         {
-            db.Dispose();
-            base.Dispose(disposing);
+            VerseManager.Delete(id);
+            return RedirectToAction("Index");
         }
 
     }

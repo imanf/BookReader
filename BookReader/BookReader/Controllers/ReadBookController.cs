@@ -5,22 +5,21 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using BookReader.Models;
+using BookReader.Data.Models;
 using BookReader.ViewModels;
+using BookReader.Data;
 
 
 namespace BookReader.Controllers
 {
     public class ReadBookController : Controller
     {
-        private BookReaderContext db = new BookReaderContext();
-        
         //
         // GET: /ReadBook/
 
         public ActionResult Index()
         {
-            ViewBag.BookId = new SelectList(db.BookModels, "Id", "Title");
+            ViewBag.BookId = new SelectList(BookManager.GetAll(), "Id", "Title");
             
             return View(new ReadBookViewModel());
         }
@@ -28,23 +27,20 @@ namespace BookReader.Controllers
         [HttpPost]
         public ActionResult Index(ReadBookViewModel readBook)
         {
-            ViewBag.BookId = new SelectList(db.BookModels, "Id", "Title");
+            ViewBag.BookId = new SelectList(BookManager.GetAll(), "Id", "Title");
 
-            readBook.Book = db.BookModels.Find(readBook.BookId);
-            readBook.References = db.ReferenceModels.Include(x => x.QuotingVerse.Chapter)
-                                                    .Include(x => x.QuotingVerse.Chapter.Book)
-                                                    .Where(x => x.ReferencedVerse.Chapter.Book.Id == readBook.Book.Id).ToList();
+            readBook.Book = BookManager.EagerLoadBook(readBook.BookId);
+            readBook.References = ReferenceManager.GetReferencesByBook(readBook.BookId);
 
             return View(readBook);
         }
 
         public ActionResult ReadReference(Guid id)
         {
-            var verse = db.VerseModels.Include(x => x.Chapter).Include(x => x.Chapter.Book).SingleOrDefault(x => x.Id == id);
-            var book = verse.Chapter.Book;
+            var verse = VerseManager.EagerLoadVerse(id);
             ViewBag.VerseNumber = verse.VerseNumber;
 
-            return PartialView(book);
+            return PartialView(verse.Chapter.Book);
         }
 
     }

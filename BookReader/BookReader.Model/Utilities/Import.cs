@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.IO;
-using BookReader.Models;
-using System.Web.Mvc;
+using BookReader.Data.Models;
 
 namespace BookReader.Utilities
 {
-    public class Import : Controller
+    public class Import
     {
-        public static void ImportBook(String bookPath, BookModel book)
+        public static void ImportBook(Book book)
         {
             BookReaderContext db = new BookReaderContext();
 
-            List<String> fileLines = System.IO.File.ReadAllLines(bookPath).ToList();
+            List<String> fileLines = System.IO.File.ReadAllLines(book.FilePath).ToList();
             Guid chapterId = Guid.Empty;
             int verseNumber = 1;
 
@@ -24,9 +23,8 @@ namespace BookReader.Utilities
                 {
                     string[] chapterData = line.Split('|');
 
-                    ChapterModel chapter = new ChapterModel
+                    Chapter chapter = new Chapter
                     {
-                        Id = Guid.NewGuid(),
                         Number = String.IsNullOrEmpty(chapterData[1]) ? (int?)null : Int32.Parse(chapterData[1]),
                         Title = chapterData[2],
                         PreText = chapterData[3],
@@ -35,20 +33,19 @@ namespace BookReader.Utilities
 
                     chapterId = chapter.Id;
                     verseNumber = 1;
-                    db.ChapterModels.Add(chapter);
+                    db.Chapters.Add(chapter);
                     db.SaveChanges();
                 }
                 else
                 {
-                    VerseModel verse = new VerseModel
+                    Verse verse = new Verse
                     {
-                        Id = Guid.NewGuid(),
                         VerseNumber = verseNumber++,
                         VerseText = line,
                         ChapterId = chapterId
                     };
 
-                    db.VerseModels.Add(verse);
+                    db.Verses.Add(verse);
                 }
             }
 

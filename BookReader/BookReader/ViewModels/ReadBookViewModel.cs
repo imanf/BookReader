@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using BookReader.Models;
+using BookReader.Data.Models;
 
 namespace BookReader.ViewModels
 {
@@ -10,8 +10,8 @@ namespace BookReader.ViewModels
     {
         public Guid BookId { get; set; }
 
-        public virtual BookModel Book { get; set; }
+        public virtual Book Book { get; set; }
 
-        public ICollection<ReferenceModel> References { get; set; }
+        public ICollection<Reference> References { get; set; }
     }
 }
