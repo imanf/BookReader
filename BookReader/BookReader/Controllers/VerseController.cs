@@ -50,7 +50,6 @@ namespace BookReader.Controllers
                 return RedirectToAction("Index");  
             }
 
-            //ViewBag.ChapterId = new SelectList(db.Chapters, "Id", "Title", versemodel.ChapterId);
             return View();
         }
         
@@ -75,7 +74,7 @@ namespace BookReader.Controllers
                 VerseManager.Edit(verse);
                 return RedirectToAction("Index");
             }
-            //ViewBag.ChapterId = new SelectList(db.Chapters, "Id", "Title", versemodel.ChapterId);
+            
             return View();
         }
 

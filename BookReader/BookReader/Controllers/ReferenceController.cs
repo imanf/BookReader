@@ -22,14 +22,6 @@ namespace BookReader.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public ActionResult LinkVerse(string chapterId1)
-        //{
-        //    var verses = db.Verses.Where(c => c.ChapterId == chapterId).OrderBy(n => n.VerseNumber);
-        //    ViewBag.Verses = verses;
-
-        //    return View();
-        //}
 
         [HttpPost]
         public ActionResult GetChapters(Guid bookId)
@@ -46,8 +38,6 @@ namespace BookReader.Controllers
         [HttpPost]
         public JsonResult GetReferences(Guid verseId)
         {
-            //db.Configuration.LazyLoadingEnabled = true;
-
             var references = ReferenceManager.GetReferencesByVerse(verseId);
 
             var referencesViewModel = new List<AddReferenceViewModel>();

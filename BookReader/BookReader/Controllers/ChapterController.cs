@@ -49,7 +49,6 @@ namespace BookReader.Controllers
                 return RedirectToAction("Index");  
             }
 
-            //ViewBag.BookId = new SelectList(BookManager.GetAll(), "Id", "Title", chapter.BookId);
             return View();
         }
         
@@ -74,7 +73,7 @@ namespace BookReader.Controllers
                 ChapterManager.Edit(chapter);
                 return RedirectToAction("Index");
             }
-            //ViewBag.BookId = new SelectList(db.Books, "Id", "Title", chapter.BookId);
+
             return View();
         }
 

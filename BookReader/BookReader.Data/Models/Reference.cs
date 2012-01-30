@@ -14,10 +14,6 @@ namespace BookReader.Data.Models
 
         public  Verse ReferencedVerse { get; set; }
 
-        //public Guid ReferencedVerseId { get; set; }
-        
         public  Verse QuotingVerse { get; set; }
-
-        //public Guid QuotingVerseId { get; set; }
     }
 }
