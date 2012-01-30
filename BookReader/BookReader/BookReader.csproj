@@ -171,7 +171,7 @@
     <Content Include="Views\ReadBook\ReadReference.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BookReader.Model\BookReader.Data.csproj">
+    <ProjectReference Include="..\BookReader.Data\BookReader.Data.csproj">
       <Project>{C8F1D7D8-CEC1-46EF-8DB3-DC0A8CD190BA}</Project>
       <Name>BookReader.Data</Name>
     </ProjectReference>

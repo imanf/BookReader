@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookReader", "BookReader\BookReader.csproj", "{81370445-9EE3-43F9-B11F-1A705203EF78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookReader.Data", "BookReader.Model\BookReader.Data.csproj", "{C8F1D7D8-CEC1-46EF-8DB3-DC0A8CD190BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookReader.Data", "BookReader.Data\BookReader.Data.csproj", "{C8F1D7D8-CEC1-46EF-8DB3-DC0A8CD190BA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookReader.WcfService", "BookReader.WcfService\BookReader.WcfService.csproj", "{5FDE2AA3-6AC4-440D-A17D-1497F46E1D7B}"
 EndProject
