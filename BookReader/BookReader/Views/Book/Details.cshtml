@@ -19,10 +19,11 @@
         @Html.DisplayFor(model => model.Author)
     </div>
 
-    <div class="display-label">FilePath</div>
+    <div class="display-label">Collection</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.FilePath)
+        @Html.DisplayFor(model => model.BookCollection.Title)
     </div>
+
 </fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |

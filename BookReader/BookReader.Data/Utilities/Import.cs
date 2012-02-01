@@ -9,32 +9,61 @@ namespace BookReader.Utilities
 {
     public class Import
     {
-        public static void ImportBook(Book book)
+        public static void ImportItem(string filePath)
         {
             BookReaderContext db = new BookReaderContext();
 
-            List<String> fileLines = System.IO.File.ReadAllLines(book.FilePath).ToList();
-            Guid chapterId = Guid.Empty;
+            BookCollection bookCollection = null;
+            Book book = new Book();
+            Chapter chapter = new Chapter();
+
+            List<String> fileLines = System.IO.File.ReadAllLines(filePath).ToList();
+
             int verseNumber = 1;
 
             foreach (String line in fileLines)
             {
-                if (line.StartsWith("!CHAPTERDATA"))
+                if (line.StartsWith("!BOOKCOLLECTIONDATA"))
                 {
+                    string[] collectionData = line.Split('|');
+
+                    bookCollection = new BookCollection
+                    {
+                        Title = collectionData[1]
+                    };
+
+                    db.BookCollections.Add(bookCollection);
+
+                } 
+                else if (line.StartsWith("!BOOKDATA"))
+                {
+                    string[] bookData = line.Split('|');
+
+                    book = new Book
+                    {
+                        Title = bookData[1],
+                        Author = bookData[2],
+                        BookCollection = bookCollection
+                    };
+
+                    db.Books.Add(book);
+
+                } 
+                else if (line.StartsWith("!CHAPTERDATA")) 
+                {
+
                     string[] chapterData = line.Split('|');
 
-                    Chapter chapter = new Chapter
+                    chapter = new Chapter
                     {
                         Number = String.IsNullOrEmpty(chapterData[1]) ? (int?)null : Int32.Parse(chapterData[1]),
                         Title = chapterData[2],
                         PreText = chapterData[3],
-                        BookId = book.Id
+                        Book = book
                     };
 
-                    chapterId = chapter.Id;
                     verseNumber = 1;
                     db.Chapters.Add(chapter);
-                    db.SaveChanges();
                 }
                 else
                 {
@@ -42,7 +71,7 @@ namespace BookReader.Utilities
                     {
                         VerseNumber = verseNumber++,
                         VerseText = line,
-                        ChapterId = chapterId
+                        Chapter = chapter
                     };
 
                     db.Verses.Add(verse);

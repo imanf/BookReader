@@ -24,16 +24,19 @@ namespace BookReader
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
-                new { controller = "Reference", action = "LinkVerse", id = UrlParameter.Optional } // Parameter defaults
+                new { controller = "Book", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
 
         }
 
         protected void Application_Start()
         {
-            System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseAlways<BookReader.Data.Models.BookReaderContext>());
+            //System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseAlways<BookReader.Data.Models.BookReaderContext>());
+
+            //Utilities.Import.ImportItem(@"C:\Projects\BookReader\BookReader\Files\Test\001_Quran.txt");
+            //Utilities.Import.ImportItem(@"C:\Projects\BookReader\BookReader\Files\Test\002_Gems.txt");
+            //Utilities.Import.ImportItem(@"C:\Projects\BookReader\BookReader\Files\Test\003_Bible_KJV.txt");
             
-            BookReader.Data.Models.TestData.Seed(new BookReader.Data.Models.BookReaderContext());
 
             AreaRegistration.RegisterAllAreas();
 

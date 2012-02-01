@@ -31,11 +31,18 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.FilePath)
+            @Html.LabelFor(model => model.BookCollection, "Book Collction")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.FilePath)
-            @Html.ValidationMessageFor(model => model.FilePath)
+            @Html.DropDownList("BookCollection", String.Empty)
+            @Html.ValidationMessageFor(model => model.BookCollection)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("FilePath")
+        </div>
+        <div class="editor-field">
+            <!-- TODO: Create FilePath or file upload field -->
         </div>
 
         <p>

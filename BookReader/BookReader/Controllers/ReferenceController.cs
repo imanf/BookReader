@@ -10,18 +10,17 @@ using BookReader.ViewModels;
 using BookReader.Data;
 
 namespace BookReader.Controllers
-{ 
+{
+    [Authorize]
     public class ReferenceController : Controller
     {
-        private BookReaderContext db = new BookReaderContext();
-
+        
         public ActionResult LinkVerse()
         {
             ViewBag.Books = new SelectList(BookManager.GetAll(), "Id", "Title");
 
             return View();
         }
-
 
         [HttpPost]
         public ActionResult GetChapters(Guid bookId)
@@ -73,6 +72,7 @@ namespace BookReader.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult Delete(Guid referenceId)
         {

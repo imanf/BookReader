@@ -33,11 +33,11 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.FilePath)
+            @Html.LabelFor(model => model.BookCollection, "Book Collection")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.FilePath)
-            @Html.ValidationMessageFor(model => model.FilePath)
+            @Html.DropDownListFor(model => model.BookCollection.Id, ViewBag.BookCollection as SelectList, String.Empty)
+            @Html.ValidationMessageFor(model => model.BookCollection.Id)
         </div>
 
         <p>

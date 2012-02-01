@@ -18,7 +18,7 @@
             Author
         </th>
         <th>
-            FilePath
+            Collection
         </th>
         <th></th>
     </tr>
@@ -32,7 +32,7 @@
             @Html.DisplayFor(modelItem => item.Author)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.FilePath)
+            @Html.DisplayFor(modelItem => item.BookCollection.Title)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

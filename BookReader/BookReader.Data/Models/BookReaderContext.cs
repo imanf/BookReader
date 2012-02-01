@@ -18,10 +18,10 @@ namespace BookReader.Data.Models
             Configuration.ProxyCreationEnabled = false;
         }
 
+        public DbSet<BookCollection> BookCollections { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<Chapter> Chapters { get; set; }
         public DbSet<Verse> Verses { get; set; }
-
         public DbSet<Reference> References { get; set; }
 
 

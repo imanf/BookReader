@@ -15,9 +15,10 @@ namespace BookReader.Data.Models
 
         [DataMember]
         public String Author { get; set; }
-        
-        public String FilePath { get; set; }
 
         public virtual ICollection<Chapter> Chapters { get; set; }
+
+        public BookCollection BookCollection { get; set; }
+
     }
 }

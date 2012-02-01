@@ -33,6 +33,7 @@ namespace BookReader.Controllers
 
         public ActionResult Create()
         {
+            ViewBag.BookCollection = new SelectList(BookCollectionManager.GetAll(), "Id", "Title");
             return View();
         } 
 
@@ -45,7 +46,8 @@ namespace BookReader.Controllers
             if (ModelState.IsValid)
             {
                 BookManager.Create(book);
-                Utilities.Import.ImportBook(book);
+                //TODO: Create FilePath or file upload field
+                Utilities.Import.ImportItem("");
                 return RedirectToAction("Index");  
             }
 
@@ -57,7 +59,9 @@ namespace BookReader.Controllers
  
         public ActionResult Edit(Guid id)
         {
-            return View(BookManager.Get(id));
+            Book book = BookManager.Get(id);
+            ViewBag.BookCollection = new SelectList(BookCollectionManager.GetAll(), "Id", "Title", book.BookCollection.Id);
+            return View(book);
         }
 
         //
@@ -66,11 +70,21 @@ namespace BookReader.Controllers
         [HttpPost]
         public ActionResult Edit(Book book)
         {
+            
+            // HACK allows us to set the book collection to empty
+            if (Request.Form["BookCollection.Id"] == String.Empty)
+            {
+                ViewBag.BookCollection = new SelectList(BookCollectionManager.GetAll(), "Id", "Title", book.BookCollection.Id);
+                book.BookCollection = null;
+                ModelState.Remove("BookCollection.Id");
+            }
+
             if (ModelState.IsValid)
             {
                 BookManager.Edit(book);
                 return RedirectToAction("Index");
             }
+
             return View(book);
         }
 

@@ -43,8 +43,18 @@ namespace BookReader.Data
         }
     }
 
+    public class BookCollectionManager : DataManager<BookCollection>
+    {
+
+    }
+
     public class BookManager : DataManager<Book>
     {
+        public new static List<Book> GetAll()
+        {
+            return db.Books.Include(b => b.BookCollection).ToList();
+        }
+        
         public static Book EagerLoadBook(Guid bookId)
         {
             return db.Books.Include(b => b.Chapters.Select(c => c.Verses)).Where(b => b.Id == bookId).FirstOrDefault();

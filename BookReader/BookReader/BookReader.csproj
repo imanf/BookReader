@@ -62,6 +62,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BookController.cs" />
     <Compile Include="Controllers\ChapterController.cs" />
     <Compile Include="Controllers\ReadBookController.cs" />
@@ -102,11 +103,14 @@
     <Content Include="Content\themes\base\jquery.ui.slider.css" />
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
-    <Content Include="Files\Source\001_Quran.txt">
+    <Content Include="Files\Prod\001_Quran.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Files\Source\001_Quran_test.txt" />
-    <Content Include="Files\Source\002_Gems.txt" />
+    <Content Include="Files\Test\001_Quran.txt" />
+    <Content Include="Files\Prod\002_Gems.txt" />
+    <Content Include="Files\Prod\003_Bible_KJV.txt" />
+    <Content Include="Files\Test\002_Gems.txt" />
+    <Content Include="Files\Test\003_Bible_KJV.txt" />
     <Content Include="Files\Target\tabernacle.txt" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css">
@@ -169,6 +173,11 @@
     <Content Include="Views\Reference\LinkVerse.cshtml" />
     <Content Include="Views\ReadBook\Index.cshtml" />
     <Content Include="Views\ReadBook\ReadReference.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Account\ChangePasswordSuccess.cshtml" />
+    <Content Include="Views\Account\LogOn.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Shared\_LogOnPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BookReader.Data\BookReader.Data.csproj">

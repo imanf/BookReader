@@ -60,15 +60,17 @@
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataManager.cs" />
+    <Compile Include="Models\Accounts.cs" />
     <Compile Include="Models\Book.cs" />
+    <Compile Include="Models\BookCollection.cs" />
     <Compile Include="Models\BookLevelType.cs" />
     <Compile Include="Models\BookReaderContext.cs" />
     <Compile Include="Models\Chapter.cs" />
     <Compile Include="Models\Reference.cs" />
-    <Compile Include="Models\TestData.cs" />
     <Compile Include="Models\Verse.cs" />
     <Compile Include="Utilities\Import.cs" />
   </ItemGroup>
