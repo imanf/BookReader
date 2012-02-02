@@ -20,5 +20,7 @@ namespace BookReader.Data.Models
 
         public BookCollection BookCollection { get; set; }
 
+        public int BookCollectionSequence { get; set; }
+
     }
 }

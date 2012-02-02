@@ -20,6 +20,8 @@ namespace BookReader.Utilities
             List<String> fileLines = System.IO.File.ReadAllLines(filePath).ToList();
 
             int verseNumber = 1;
+            bool isBookCollection = false;
+            int bookCollectionSequence = 1;
 
             foreach (String line in fileLines)
             {
@@ -32,6 +34,7 @@ namespace BookReader.Utilities
                         Title = collectionData[1]
                     };
 
+                    isBookCollection = true;
                     db.BookCollections.Add(bookCollection);
 
                 } 
@@ -45,6 +48,12 @@ namespace BookReader.Utilities
                         Author = bookData[2],
                         BookCollection = bookCollection
                     };
+
+                    if (isBookCollection)
+                    {
+                        book.BookCollectionSequence = bookCollectionSequence;
+                        bookCollectionSequence++;
+                    }
 
                     db.Books.Add(book);
 
@@ -64,6 +73,7 @@ namespace BookReader.Utilities
 
                     verseNumber = 1;
                     db.Chapters.Add(chapter);
+                    db.SaveChanges();
                 }
                 else
                 {

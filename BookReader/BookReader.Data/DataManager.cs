@@ -52,7 +52,7 @@ namespace BookReader.Data
     {
         public new static List<Book> GetAll()
         {
-            return db.Books.Include(b => b.BookCollection).ToList();
+            return db.Books.Include(b => b.BookCollection).OrderBy(b => b.BookCollectionSequence).ToList();
         }
         
         public static Book EagerLoadBook(Guid bookId)
