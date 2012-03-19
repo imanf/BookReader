@@ -106,12 +106,13 @@
     <Content Include="Files\Prod\001_Quran.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Files\Prod\005_Iqan.txt" />
     <Content Include="Files\Test\001_Quran.txt" />
     <Content Include="Files\Prod\002_Gems.txt" />
     <Content Include="Files\Prod\003_Bible_KJV.txt" />
     <Content Include="Files\Test\002_Gems.txt" />
     <Content Include="Files\Test\003_Bible_KJV.txt" />
-    <Content Include="Files\Target\tabernacle.txt" />
+    <Content Include="Files\Prod\004_Tabernacle.txt" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

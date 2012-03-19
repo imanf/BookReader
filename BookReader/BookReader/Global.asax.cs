@@ -31,12 +31,15 @@ namespace BookReader
 
         protected void Application_Start()
         {
-            //System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseAlways<BookReader.Data.Models.BookReaderContext>());
+            System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseAlways<BookReader.Data.Models.BookReaderContext>());
 
             //Utilities.Import.ImportItem(@"C:\Projects\BookReader\BookReader\Files\Test\001_Quran.txt");
             //Utilities.Import.ImportItem(@"C:\Projects\BookReader\BookReader\Files\Test\002_Gems.txt");
             //Utilities.Import.ImportItem(@"C:\Projects\BookReader\BookReader\Files\Test\003_Bible_KJV.txt");
-            
+            //Utilities.Import.ImportItem(@"C:\Projects\BookReader\BookReader\Files\Target\004_Tabernacle.txt");
+            //Utilities.Import.ImportItem(@"C:\Projects\BookReader\BookReader\Files\Prod\005_Iqan.txt");
+
+            Utilities.Import.ConvertToXML(@"C:\Projects\BookReader\BookReader\Files\Prod\005_Iqan.txt", @"C:\Projects\BookReader\BookReader\Files\Prod\005_Iqan.xml");
 
             AreaRegistration.RegisterAllAreas();
 
