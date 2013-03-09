@@ -93,12 +93,60 @@ namespace BookReader.Utilities
             db.SaveChanges();
         }
 
+        public static void ImportXMLItem(string filePath)
+        {
+            BookReaderContext db = new BookReaderContext();
 
+            XDocument xmlDoc = XDocument.Load(filePath);
+
+            BookCollection bookCollection = new BookCollection
+            {            
+                Id = Guid.Parse(xmlDoc.Element("bookcollection").Attribute("id").Value),
+                Title = (string) xmlDoc.Element("bookcollection").Element("title")
+            };
+
+            db.BookCollections.Add(bookCollection);
+
+            var books = from bk in xmlDoc.Descendants("book")
+                        select new Book
+                        {
+                            Id = Guid.Parse(bk.Attribute("id").Value),
+                            Title = (string) bk.Element("title"),
+                            Author = (string) bk.Element("author"),
+                            BookCollectionSequence = Int32.Parse(bk.Element("number").Value),
+                            BookCollection = bookCollection,
+                            Chapters = (
+                                from c in bk.Elements("chapters").Elements("chapter")
+                                select new Chapter
+                                {
+                                    Id = Guid.Parse(c.Attribute("id").Value),
+                                    Number = Int32.Parse(c.Element("number").Value),
+                                    Title = (string) c.Element("title"),
+                                    PreText = (string) c.Element("subtitle"),
+                                    Verses = (
+                                        from v in c.Elements("verses").Elements("verse")
+                                        select new Verse
+                                        {
+                                            Id = Guid.Parse(v.Attribute("id").Value),
+                                            VerseText = (string) v.Element("text"),
+                                            VerseNumber = Int32.Parse(v.Element("number").Value)
+                                        }
+                                    ).ToArray()
+                                }).ToArray()
+                        };
+
+            foreach (var book in books) {
+                db.Books.Add(book);
+            }
+
+            db.SaveChanges();
+        }
 
         public static void ConvertToXML(string inputFile, string outputFile)
         {
             XDocument doc = new XDocument();
             XElement root = new XElement("bookcollection");
+            root.SetAttributeValue("id", Guid.NewGuid());
             
 
             XElement books = new XElement("books");
@@ -110,12 +158,10 @@ namespace BookReader.Utilities
             XElement verses = new XElement("verses");
             XElement verse;
 
-            root.Add(books);
-
             List<String> fileLines = System.IO.File.ReadAllLines(inputFile).ToList();
 
             int verseNumber = 1;
-            bool isBookCollection = false;
+            bool isBookCollection = true;
             int bookCollectionSequence = 1;
 
             foreach (String line in fileLines)
@@ -124,7 +170,10 @@ namespace BookReader.Utilities
                 {
                     string[] collectionData = line.Split('|');
 
-                    root.SetElementValue("name", collectionData[1]);
+                    if (!String.IsNullOrEmpty(collectionData[1]))
+                    {
+                        root.SetElementValue("title", collectionData[1]);
+                    }
 
                     isBookCollection = true;
                     
@@ -135,8 +184,21 @@ namespace BookReader.Utilities
 
                     book = new XElement("book");
                     book.SetAttributeValue("id", Guid.NewGuid());
-                    book.SetElementValue("title", bookData[1]);
-                    book.SetElementValue("author", bookData[2]);
+                    if (!String.IsNullOrEmpty(bookData[1]))
+                    {
+                        book.SetElementValue("title", bookData[1]);
+                    }
+                    
+                    if (!String.IsNullOrEmpty(bookData[2]))
+                    {
+                        book.SetElementValue("author", bookData[2]);
+                    }
+
+                    if (isBookCollection)
+                    {
+                        book.SetElementValue("number", bookCollectionSequence);
+                        bookCollectionSequence++;
+                    }
 
                     books.Add(book);
 
@@ -149,9 +211,20 @@ namespace BookReader.Utilities
                     string[] chapterData = line.Split('|');
                     chapter = new XElement("chapter");
                     chapter.SetAttributeValue("id", Guid.NewGuid());
-                    chapter.SetElementValue("number", chapterData[1]);
-                    chapter.SetElementValue("title", chapterData[2]);
-                    chapter.SetElementValue("subtitle", chapterData[3]);
+                    if (!String.IsNullOrEmpty(chapterData[1]))
+                    {
+                        chapter.SetElementValue("number", chapterData[1]);
+                    }
+
+                    if (!String.IsNullOrEmpty(chapterData[2]))
+                    {
+                        chapter.SetElementValue("title", chapterData[2]);
+                    }
+
+                    if (!String.IsNullOrEmpty(chapterData[3]))
+                    {
+                        chapter.SetElementValue("subtitle", chapterData[3]);
+                    }
 
                     chapters.Add(chapter);
                     
@@ -165,13 +238,19 @@ namespace BookReader.Utilities
                     verse = new XElement("verse");
                     verse.SetAttributeValue("id", Guid.NewGuid());
 
-                    verse.SetElementValue("text", line);
+                    if (!String.IsNullOrEmpty(line))
+                    {
+                        verse.SetElementValue("text", line);
+                    }
+                    
                     verse.SetElementValue("number", verseNumber++);
                     verses.Add(verse);
                 }
             }
-            doc.Add(root);
 
+            root.Add(books);
+            doc.Add(root);
+            
             doc.Save(outputFile);
         }
 

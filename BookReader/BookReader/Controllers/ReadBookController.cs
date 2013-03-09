@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using BookReader.Data.Models;
 using BookReader.ViewModels;
 using BookReader.Data;
+using System.Web.UI.WebControls;
 
 
 namespace BookReader.Controllers
@@ -19,6 +20,11 @@ namespace BookReader.Controllers
 
         public ActionResult Index()
         {
+            XmlDataSource xds = new XmlDataSource();
+
+            DataSet ds = new DataSet();
+            ds.ReadXml(@"C:\Projects\BookReader\BookReader\Files\Prod\005_Iqan.xml");
+
             ViewBag.BookId = new SelectList(BookManager.GetAll(), "Id", "Title");
             
             return View(new ReadBookViewModel());
